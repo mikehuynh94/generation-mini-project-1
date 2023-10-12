@@ -1,6 +1,6 @@
 import options as option
 
-products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts']
+products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts', 'Lemons']
 
 orders_list = [{
     "Customer Name": "John",
