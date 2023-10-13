@@ -34,15 +34,19 @@ def input_order():
     chosen_order = int(chosen_order) - 1
     return chosen_order
 
-def add_new_order():
+def add_new_order(couriers_list):
     print()
     customer_name = input("Please enter your name:\n")
     customer_address =input("Please enter your address:\n")
     customer_number = input("Please enter your phone number:\n")
+    for index, courier in enumerate(couriers_list):
+        print(index + 1, courier)
+    chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
     new_order = {
         "Customer Name": customer_name,
         "Customer Address": customer_address,
         "Phone Number": customer_number,
+        "Courier": chosen_courier,
         "Order Status": "Preparing Order"}
     return new_order
 

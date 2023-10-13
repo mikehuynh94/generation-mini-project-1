@@ -1,11 +1,17 @@
 import options as option
+import lists
 
-products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts', 'Biscuits']
+#products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts', 'Biscuits']
+
+#   Loading lists from text files
+products = lists.load_products()
+couriers = lists.load_couriers()
 
 orders_list = [{
     "Customer Name": "John",
     "Customer Address": "Unit 2, 12 Main Street, London, WH1 2ER",
     "Phone Number": "0789887334",
+    "Courier": 2,
     "Order Status": "Preparing Order"
 }]
 
@@ -20,7 +26,8 @@ main_menu_options = """
 ===================
 
 1. Products Menu
-2. Orders Menu
+2. Couriers Menu
+3. Orders Menu
 0. Exit Application
 """
 
@@ -33,6 +40,18 @@ product_menu_options = """
 2. Add a new product
 3. Update an existing product
 4. Delete an existing product
+0. Return to main menu
+"""
+
+courier_menu_options = """
+=====================
+=== Couriers Menu ===
+=====================
+
+1. Show all couriers
+2. Add new courier
+3. Update an existing courier
+4. Delete Courier
 0. Return to main menu
 """
 
@@ -52,6 +71,7 @@ order_menu_options = """
 menu = True
 p_menu = True
 o_menu = True
+c_menu = True
 
 while menu == True:
 
@@ -77,6 +97,8 @@ while menu == True:
     if user_option == 0:    # If user selects 0 then the program will terminate
         print("Leaving Mike's Online Supermarket")
         menu = False
+        lists.save_products(products)
+        lists.save_couriers(couriers)
         exit()
 
     elif user_option == 1: # Option for products menu
@@ -107,8 +129,8 @@ while menu == True:
 
                 elif user_option == 1: # Upon selecting option 1 the system will print all the items in products
                     print("Printing list of all products in the shop:\n")
-                    for a in products:
-                        print(a)
+                    for item in products:
+                        print(item)
 
                 elif user_option == 2: # Upon selecting option 2 this will prompt the user
                                        # to enter a name of a product they wish to add
@@ -120,9 +142,9 @@ while menu == True:
                     print("Please select from the list below the product you want to update:\n")
 
                     # Prints all the products and their index for the user to choose from
-                    for a in products:
+                    for item in products:
                         # adds 1 to the index as the list starts from 0
-                        print(str(products.index(a) + 1) + ".", a)
+                        print(str(products.index(item) + 1) + ".", item)
 
                     # Takes users input and -1 to find the product to update
 
@@ -136,9 +158,9 @@ while menu == True:
                 elif user_option == 4: # Upon selecting option 4
                     print("Please select an ID number from the list below to remove:\n")
                     # Prints all the products and their index for the user to choose from
-                    for a in products:
+                    for item in products:
                         # adds 1 to the index as the list starts from 0
-                        print(str(products.index(a) + 1) + ".", a)
+                        print(str(products.index(item) + 1) + ".", item)
                     # Takes users input and -1 to find the product to delete
                     product_delete = int(input("Enter here:\n")) - 1
                     print(f"Deleting the product: {products[product_delete]}")
@@ -159,17 +181,52 @@ while menu == True:
                 #break
                 continue
 
+    elif user_option == 2: # Option of couriers menu
+        c_menu = True
+        while c_menu == True:
+            print(courier_menu_options)
+            user_option  = input("Please enter a number option from the list above:\n")
+            if user_option.isdigit(): # Confirms if user input is a string that is a number
+                # Confirms if user input is a string that is a number
+                user_option = int(user_option)
+
+                # Option to return to main menu
+                if user_option == 0:
+                    print("Returning to main menu please wait!\n")
+                    # Upon selecting option 0 to return to the
+                    # main menu then o_menu becomes false to end the loop
+                    c_menu = False
+
+                elif user_option == 1: # Option to print all orders
+                    print("Printing all available couriers!")
+                    for person in couriers:
+                        print(person)
+
+                elif user_option == 2: # Option to add a new courier
+                    print("Creating a new courier!")
+
+                elif user_option == 3: # Option to update an existing courier
+                    print("Updating an existing courier!")
+
+                elif user_option == 4: # Option to delete an existing courier
+                    print("Deleting an existing courier")
+
+                else:
+                # if the user enters an option that is not within the selected range
+                # # then print the error and loop
+                    print("This option is not valid please try again!\n")
+
+            else:
+                print("This option is not valid please try again!\n")
+                #continue
+                #break
 
 
-    elif user_option == 2: # Option for orders menu
+    elif user_option == 3: # Option for orders menu
         o_menu = True
 
         while o_menu == True:
             print(order_menu_options)
-
-            # if option.call_orders_menu(orders_list) == False:
-            #     o_menu = False
-            #     continue
 
             user_option  = input("Please enter a number option from the list above:\n")
             if user_option.isdigit(): # Confirms if user input is a string that is a number
@@ -197,7 +254,7 @@ while menu == True:
                     #orders_list = dict(**orders_list, option.add_new_order())
                     #orders_list.append(option.add_new_order())
                     #new_order = option.add_new_order()
-                    orders_list.append(option.add_new_order())
+                    orders_list.append(option.add_new_order(couriers))
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")
