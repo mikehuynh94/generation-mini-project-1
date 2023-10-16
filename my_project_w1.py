@@ -1,4 +1,5 @@
 import options as option
+import couriers_options
 import lists
 
 #products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts', 'Biscuits']
@@ -197,19 +198,22 @@ while menu == True:
                     # main menu then o_menu becomes false to end the loop
                     c_menu = False
 
-                elif user_option == 1: # Option to print all orders
+                elif user_option == 1: # Option to print all couriers
                     print("Printing all available couriers!")
                     for person in couriers:
                         print(person)
 
                 elif user_option == 2: # Option to add a new courier
                     print("Creating a new courier!")
+                    couriers.append(couriers_options.add_couriers())
 
                 elif user_option == 3: # Option to update an existing courier
                     print("Updating an existing courier!")
+                    couriers = couriers_options.update_courier(couriers)
 
                 elif user_option == 4: # Option to delete an existing courier
                     print("Deleting an existing courier")
+                    couriers = couriers_options.delete_courier(couriers)
 
                 else:
                 # if the user enters an option that is not within the selected range
