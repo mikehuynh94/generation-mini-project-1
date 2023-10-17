@@ -8,7 +8,7 @@ def update_courier(couriers):
     courier_check = False
     courier_index = ""
     while courier_check == False:
-        courier_index = input("Please select the ID number of the courier to update:\n")
+        courier_index = input("Please select the ID number of the courier to delete:\n")
         if courier_index.isdigit() == True:
             courier_index = int(courier_index) - 1
             if courier_index >= 0 and courier_index <= len(couriers):

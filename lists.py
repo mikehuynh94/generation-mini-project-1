@@ -2,7 +2,7 @@
 
 def load_products():
     products_list = []
-    filepath = (r"C:\Users\Mike\Desktop\Python\Data Engineering Python Practice\project\\generation-mini-project-1\\products.txt")
+    filepath = ("products.txt")
     contents = open(filepath, "r")
     lines = contents.readlines()
 
@@ -15,7 +15,7 @@ def load_products():
 def load_couriers():
     courier_list = []
 
-    filepath = (r"C:\Users\Mike\Desktop\Python\Data Engineering Python Practice\project\\generation-mini-project-1\\couriers.txt")
+    filepath = ("couriers.txt")
 
     contents = open(filepath, "r")
 
