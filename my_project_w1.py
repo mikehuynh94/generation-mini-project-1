@@ -2,8 +2,6 @@ import options as option
 import couriers_options
 import lists
 
-#products = ['Coke Zero', 'Apples', 'Oranges', 'Doughnuts', 'Biscuits']
-
 #   Loading lists from text files
 products = lists.load_products()
 couriers = lists.load_couriers()
