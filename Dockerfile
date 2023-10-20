@@ -3,7 +3,7 @@ FROM python:3.9
 WORKDIR /project
 
 # Copy everything from our project root into our WORK DIRECTORY directory
-COPY . .
+COPY . ./
 
 EXPOSE 80
 

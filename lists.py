@@ -1,5 +1,5 @@
 
-
+#Function to read from products text file and save the products to a list
 def load_products():
     products_list = []
     filepath = ("products.txt")
@@ -11,7 +11,7 @@ def load_products():
     contents.close()
     return products_list
 
-
+#Function to read from couriers text file and save the couriers to a list
 def load_couriers():
     courier_list = []
 
@@ -27,6 +27,9 @@ def load_couriers():
     return courier_list
 
 
+# Function that takes the products list as an argument
+# and writes over the products text file with the products from the list
+# to update and save the changes
 def save_products(products):
     filepath = ("products.txt")
     save_products_file = open(filepath, "w")
@@ -34,6 +37,9 @@ def save_products(products):
         save_products_file.write(product + "\n")
     save_products_file.close()
 
+# Function that takes the couriers list as an argument
+# and writes over the couriers text file with the couriers from the list
+# to update and save the changes
 def save_couriers(couriers):
     filepath = ("couriers.txt")
     save_couriers_file = open(filepath, "w")

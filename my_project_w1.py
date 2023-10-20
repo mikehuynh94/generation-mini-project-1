@@ -79,19 +79,8 @@ while menu == True:
 
     user_option = input("Please enter a number option from the list above:\n")
 
-    # Function to take user input
+    # Function to check user input if it can be turned into an integer
     user_option = option.check_input(user_option)
-
-    # if user_option.isdigit(): # Confirms if user input is a string that is a number
-    #     # if the option is valid then this will change user input
-    #     # # that was a string into a integer and store it
-    #     user_option = int(user_option)
-
-    # else:   # If user enters anything other than a number then outputs
-    #     # the below error message and resends the user back to the main menu
-    #     print("Error: Invalid input, Please enter a valid number from the list!")
-    #     print("\n")
-    #     continue
 
     if user_option == 0:    # If user selects 0 then the program will terminate
         print("Leaving Mike's Online Supermarket")
@@ -106,12 +95,6 @@ while menu == True:
         while p_menu == True: # loops back to product menu whilst p_menu is true
 
             print(product_menu_options) # Prints out the product menu options for the user
-
-            # #function to call for products menu from the options module
-            # # and sends in the products list as an argument
-            # if option.call_products_menu(products) == False:
-            #     p_menu = False
-            #     continue
 
             user_option  = input("Please enter a number option from the list above:\n")
             # Confirms if user input is a string that is a number
@@ -253,26 +236,15 @@ while menu == True:
 
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
-                    #orders_list = dict(**orders_list, option.add_new_order())
-                    #orders_list.append(option.add_new_order())
-                    #new_order = option.add_new_order()
+
                     orders_list.append(option.add_new_order(couriers))
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")
-                    # count = 0
+
                     print("choose an order to update the status of below:")
 
                     option.print_orders(orders_list)
-                    # for orders in orders_list:
-                    #     count += 1
-                    #     #print("Orders is:", orders)
-                    #     print (f"{count}.")
-                    #     #temp_list.append({count:orders})
-                    #     for key, values in orders.items():
-                    #         print(key, ":", values)
-                    #     print("\n")
-
                     option.update_order_status(orders_list)
 
 
@@ -281,17 +253,6 @@ while menu == True:
                     print("Update an order")
 
                     option.print_orders(orders_list)
-                    # print("Printing all existing orders!\n")
-                    # count = 0
-                    # for orders in orders_list:
-                    #     count += 1
-                    #     #print("Orders is:", orders)
-                    #     print (f"{count}.")
-                    #     #temp_list.append({count:orders})
-                    #     for key, values in orders.items():
-                    #         print(key, ":", values)
-                    #     print("\n")
-
                     option.update_order(orders_list)
 
 
@@ -313,7 +274,7 @@ while menu == True:
     # if the user enters an option that is not within the selected range
     # # print the error and loop back
     else:
-    # elif user_option > 2 or user_option < 0:
+    # elif user_option > 3 or user_option < 0:
         print("This option is not valid please try again!\n")
         #break
         continue

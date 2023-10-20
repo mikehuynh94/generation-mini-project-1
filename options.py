@@ -1,4 +1,4 @@
-
+#Function to check if user enters a number
 def check_input(user_input):
 
         if user_input.isdigit(): # Confirms if user input is a string that is a number
@@ -12,6 +12,7 @@ def check_input(user_input):
             print("Error: Invalid input, Please enter a valid number from the list!")
             print("\n")
 
+#Function to print all existing orders
 def print_orders(orders_list):
     print("Printing all existing orders!\n")
     if orders_list != []:
@@ -29,11 +30,14 @@ def print_orders(orders_list):
     else:
         print("There are no more orders left!")
 
+# function to take users input and turn it into an integer
 def input_order():
     chosen_order = input("Please select the ID of the displayed orders above:\n")
+    check_input(chosen_order)
     chosen_order = int(chosen_order) - 1
     return chosen_order
 
+# Function to add a new order
 def add_new_order(couriers_list):
     print()
     customer_name = input("Please enter your name:\n")
@@ -50,31 +54,23 @@ def add_new_order(couriers_list):
         "Order Status": "Preparing Order"}
     return new_order
 
-#def update_order(orders, items):
+# Function to update an existing order
 def update_order(orders):
     new_order = []
     chosen_order = input_order()
 
     for key, value in orders[chosen_order].items():
-        #print(f"This orders key is: {key}\nThis orders Value is: {value}")
+
         print(f"The current {key} is: {value}")
         new_value = input(f"Please enter the new value for {key}:\n")
         if new_value != "":
-
             new_order.append({key:new_value})
-            #print(new_order)
-            #update_order = {key:new_value}
             orders[chosen_order].update({key:new_value})
-            #print(orders)
-            #orders[chosen_order - 1] = new_order
-            #orders.update(new_order)
-            #orders[chosen_order] = new_order
         else:
             continue
-
-    #print(orders)
     return orders
 
+# Function to update just the status of an existing order
 def update_order_status(orders):
     chosen_order = input_order()
     print("You have chosen the following order:")
@@ -88,6 +84,7 @@ def update_order_status(orders):
     orders[chosen_order]['Order Status'] = status_update
     print(orders[chosen_order])
 
+# Function to delete an existing order
 def delete_order(orders):
     print("")
     chosen_order = input_order()
