@@ -1,9 +1,11 @@
-import options as option
+import orders_options as option
 import couriers_options
+import products_options
 import lists
 
-#   Loading lists from text files
+#   Loading lists from csv files
 products = lists.load_products()
+# TODO change from loading txt to load from csv
 couriers = lists.load_couriers()
 
 orders_list = [{
@@ -11,7 +13,8 @@ orders_list = [{
     "Customer Address": "Unit 2, 12 Main Street, London, WH1 2ER",
     "Phone Number": "0789887334",
     "Courier": 2,
-    "Order Status": "Preparing Order"
+    "Order Status": "Preparing Order",
+    #"Items":"1, 3, 4"
 }]
 
 
@@ -110,44 +113,21 @@ while menu == True:
                     continue
 
                 elif user_option == 1: # Upon selecting option 1 the system will print all the items in products
-                    print("Printing list of all products in the shop:\n")
-                    for item in products:
-                        print(item)
+
+                    products_options.print_products(products)
 
                 elif user_option == 2: # Upon selecting option 2 this will prompt the user
                                        # to enter a name of a product they wish to add
-                    print("Adding a new product to the list")
-                    new_product = input("Please enter the name of the product you wish to add:\n")
-                    products.append(new_product) # adds the new product to the end of the list
+
+                    products.append(products_options.add_new_product())
 
                 elif user_option == 3: # Upon selecting option 3
-                    print("Please select from the list below the product you want to update:\n")
 
-                    # Prints all the products and their index for the user to choose from
-                    for item in products:
-                        # adds 1 to the index as the list starts from 0
-                        print(str(products.index(item) + 1) + ".", item)
-
-                    # Takes users input and -1 to find the product to update
-
-                    product_edit = int(input("Enter here:\n"))-1
-
-                    print(f"Currently editing: {products[product_edit]}")
-                    # Takes users input to replace the product in the list
-                    products[product_edit] = input("Please enter the new product name:\n")
-
+                    products = products_options.update_product(products)
 
                 elif user_option == 4: # Upon selecting option 4
-                    print("Please select an ID number from the list below to remove:\n")
-                    # Prints all the products and their index for the user to choose from
-                    for item in products:
-                        # adds 1 to the index as the list starts from 0
-                        print(str(products.index(item) + 1) + ".", item)
-                    # Takes users input and -1 to find the product to delete
-                    product_delete = int(input("Enter here:\n")) - 1
-                    print(f"Deleting the product: {products[product_delete]}")
-                    # Removes the product from the list
-                    products.pop(product_delete)
+                    
+                    products.pop(products_options.delete_product(products))
 
                 # if the user enters an option that is not within the selected range
                 # # then print the error and loop
