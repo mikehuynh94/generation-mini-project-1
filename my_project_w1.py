@@ -126,8 +126,9 @@ while menu == True:
                     products = products_options.update_product(products)
 
                 elif user_option == 4: # Upon selecting option 4
-                    
-                    products.pop(products_options.delete_product(products))
+                    remove_product = products_options.delete_product(products)
+                    if remove_product != False:
+                        products.pop(remove_product)
 
                 # if the user enters an option that is not within the selected range
                 # # then print the error and loop

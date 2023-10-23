@@ -45,6 +45,16 @@ def delete_product(products):
         print(f"{str(products.index(item) + 1)}. {item['Name']} Price: £{item['Price']}")
     # Takes users input and -1 to find the product to delete
     product_delete = int(input("Enter here:\n")) - 1
-    print(f"Deleting the product: {products[product_delete]}")
-    # Removes the product from the list
-    return product_delete
+    if product_delete > 0 and product_delete < len(products):
+        print(f"Deleting the product: {products[product_delete]}")
+        # Removes the product from the list
+        confirmation = input("Please enter DELETE if you would like to continue:\n")
+        if confirmation == "DELETE":
+            return product_delete
+        else:
+            print(f"Canceled the deletion of {products[product_delete]}")
+            return False
+    else:
+        print("Error invalid ID number selected")
+        print("Please try again!")
+        return False
