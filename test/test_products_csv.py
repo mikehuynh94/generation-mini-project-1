@@ -12,17 +12,6 @@ def test_load_products():
     print(products)
     return products
 
-#Load couriers csv file
-def test_load_couriers():
-    couriers = []
-    with open("test_couriers.csv", 'r') as file:
-        couriers_data = csv.reader(file, delimiter=",")
-        for courier, phone_number in couriers_data:
-            #print(f"{courier}: {float(phone_number)}")
-            couriers.append({"Name":courier,"Phone":phone_number})
-    print(couriers)
-    return couriers
-
 #Save into products csv file
 def test_save_products(products):
     with open("test_save_products.csv", 'w', newline='') as file:
@@ -35,25 +24,12 @@ def test_save_products(products):
             data = product_items['Name'], product_items['Price']
             writer.writerow(data)
 
-#Save into couriers csv file
-def test_save_couriers(couriers):
-    with open("test_save_couriers.csv", 'w', newline='') as file:
-        writer = csv.writer(file)
-
-        for courier in couriers:
-
-            print(courier['Name'])
-            print(courier['Phone'])
-            data = courier['Name'], courier['Phone']
-            writer.writerow(data)
 
 #Testing loading csv files
 test_load_products()
-#test_load_couriers()
 
 #Testing saving csv files
 test_save_products(test_load_products())
-#test_save_couriers(test_load_couriers())
 
 products = test_load_products()
 

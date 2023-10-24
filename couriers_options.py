@@ -1,9 +1,11 @@
+#Function to print all couriers from list
 def print_couriers(couriers):
     print("Printing all available couriers!\n")
     for person in couriers:
         print(f"{person['Name']}\nContact Number: {person['Phone']}\n")
     print("")
 
+#Function to add a new courier to the list
 def add_couriers():
     new_courier_name = input("Please enter the new name of the courier you wish to add:\n")
     new_courier_number = input(f"Please enter the phone number to contact {new_courier_name}:\n")
@@ -13,6 +15,7 @@ def add_couriers():
     }
     return new_courier
 
+#Function to update an existing courier
 def update_courier(couriers):
     for index, courier in enumerate(couriers):
         print(f"{index+1}. {courier['Name']}\nPhone: {courier['Phone']}\n")
@@ -45,6 +48,7 @@ def update_courier(couriers):
         print("Courier phone number has not been updated!")
     return couriers
 
+#Function to delete a courier from the couriers list
 def delete_courier(couriers):
     for index, courier in enumerate(couriers):
         print(f"{index+1}. {courier['Name']}\nPhone: {courier['Phone']}\n")

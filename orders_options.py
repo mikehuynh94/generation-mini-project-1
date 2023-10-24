@@ -16,15 +16,10 @@ def check_input(user_input):
 def print_orders(orders_list):
     print("Printing all existing orders!\n")
     if orders_list != []:
-        count = 0
-        for orders in orders_list:
-            count += 1
-            # print("Orders is:", orders)
-            print (f"======== Order No. {count} ========")
-            #temp_list.append({count:orders})
+        for index, orders in enumerate(orders_list):
+            print (f"======== Order No. {index+1} ========")
             for key, values in orders.items():
                 print(key, ":", values)
-
         print("=============================")
         print("\n")
     else:

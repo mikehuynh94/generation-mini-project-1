@@ -7,6 +7,8 @@ import lists
 products = lists.load_products()
 couriers = lists.load_couriers()
 
+# TODO load orders from csv file and save to order csv file after exiting program
+# orders will contain items key that will include index of product items
 orders_list = [{
     "Customer Name": "John",
     "Customer Address": "Unit 2, 12 Main Street, London, WH1 2ER",
