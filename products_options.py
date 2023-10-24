@@ -1,9 +1,11 @@
+# Function to print all products and their prices
 def print_products(products):
     print("Printing list of all products in the shop:\n")
     for item in products:
         print(f"{item['Name']}: £{item['Price']}")
     print("")
 
+# Function to allow user to add a new product and the price
 def add_new_product():
     print("Adding a new product")
     new_product_name = input("Enter a product name:\n")
@@ -11,6 +13,7 @@ def add_new_product():
     new_product_data = {'Name':new_product_name,'Price':new_product_price}
     return new_product_data
 
+# Function to allow user to edit an existing product
 def update_product(products):
     print("Please select an ID number from the list below to update:\n")
     for item in products:
@@ -37,6 +40,7 @@ def update_product(products):
             print("Please try again!")
     return products
 
+# Function to allow user to remove an existing product
 def delete_product(products):
     print("Please select an ID number from the list below to remove:\n")
     # Prints all the products and their index for the user to choose from

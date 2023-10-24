@@ -1,11 +1,10 @@
-import orders_options as option
+import orders_options as o_options
 import couriers_options
 import products_options
 import lists
 
 #   Loading lists from csv files
 products = lists.load_products()
-# TODO change from loading txt to load from csv
 couriers = lists.load_couriers()
 
 orders_list = [{
@@ -83,7 +82,7 @@ while menu == True:
     user_option = input("Please enter a number option from the list above:\n")
 
     # Function to check user input if it can be turned into an integer
-    user_option = option.check_input(user_option)
+    user_option = o_options.check_input(user_option)
 
     if user_option == 0:    # If user selects 0 then the program will terminate
         print("Leaving Mike's Online Supermarket")
@@ -161,9 +160,7 @@ while menu == True:
                     c_menu = False
 
                 elif user_option == 1: # Option to print all couriers
-                    print("Printing all available couriers!")
-                    for person in couriers:
-                        print(person)
+                    couriers_options.print_couriers(couriers)
 
                 elif user_option == 2: # Option to add a new courier
                     print("Creating a new courier!")
@@ -218,29 +215,29 @@ while menu == True:
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
 
-                    orders_list.append(option.add_new_order(couriers))
+                    orders_list.append(o_options.add_new_order(couriers))
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")
 
                     print("choose an order to update the status of below:")
 
-                    option.print_orders(orders_list)
-                    option.update_order_status(orders_list)
+                    o_options.print_orders(orders_list)
+                    o_options.update_order_status(orders_list)
 
 
 
                 elif user_option == 4: # Option to update an existing order
                     print("Update an order")
 
-                    option.print_orders(orders_list)
-                    option.update_order(orders_list)
+                    o_options.print_orders(orders_list)
+                    o_options.update_order(orders_list)
 
 
                 elif user_option == 5: # Option to delete an existing order
                     print("Delete an existing order!")
-                    option.print_orders(orders_list)
-                    option.delete_order(orders_list)
+                    o_options.print_orders(orders_list)
+                    o_options.delete_order(orders_list)
 
                 else:
                 # if the user enters an option that is not within the selected range
