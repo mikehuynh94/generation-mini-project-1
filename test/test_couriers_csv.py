@@ -116,5 +116,5 @@ couriers = test_load_couriers()
 # print(couriers)
 
 #Testing to delete an existing courier
-test_delete_courier(couriers)
-print(couriers)
+#test_delete_courier(couriers)
+#print(couriers)

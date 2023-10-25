@@ -42,3 +42,29 @@ def save_couriers(couriers):
         for courier in couriers:
             data = courier['Name'], courier['Phone']
             writer.writerow(data)
+
+#Load orders.csv file
+def load_orders():
+    orders = []
+    with open("orders.csv", 'r') as file:
+        orders_data = csv.reader(file, delimiter=",")
+        for order in orders_data:
+            temp = {
+                'Customer Name':order[0],
+                'Customer Address':order[1],
+                'Phone Number':order[2],
+                'Courier':order[3],
+                'Order Status':order[4],
+                'Items':order[5]}
+            orders.append(temp)
+    #print(orders)
+    return orders
+
+#Save into orders csv file
+def save_orders(orders):
+    with open("orders.csv", 'w', newline='') as file:
+        writer = csv.writer(file)
+
+        for order in orders:
+            data = [order['Customer Name'], order['Customer Address'], order["Phone Number"], order['Courier'], order['Order Status'], order['Items']]
+            writer.writerow(data)

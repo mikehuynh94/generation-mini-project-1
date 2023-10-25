@@ -1,5 +1,5 @@
-
 import csv
+
 #Load products csv file
 def test_load_products():
     products = []

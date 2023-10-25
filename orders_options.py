@@ -9,18 +9,26 @@ def check_input(user_input):
 
         else:   # If user enters anything other than a number then outputs
         # the below error message and resends the user back to the main menu
-            print("Error: Invalid input, Please enter a valid number from the list!")
+            print("Error: Invalid input, a number was not entered!")
             print("\n")
+            return -1
+
+def print_all_orders(orders_list):
+    print()
+    for orders in orders_list:
+        for key, values in orders.items():
+            print(f"{key}: {values}")
+        print("\n")
 
 #Function to print all existing orders
-def print_orders(orders_list):
+def print_orders_with_index(orders_list):
     print("Printing all existing orders!\n")
     if orders_list != []:
         for index, orders in enumerate(orders_list):
-            print (f"======== Order No. {index+1} ========")
+            print (f"======================= Order No. {index+1} =======================")
             for key, values in orders.items():
                 print(key, ":", values)
-        print("=============================")
+        print("===========================================================")
         print("\n")
     else:
         print("There are no more orders left!")
@@ -33,36 +41,89 @@ def input_order():
     return chosen_order
 
 # Function to add a new order
-def add_new_order(couriers_list):
-    print()
+def add_new_order(couriers_list, products_list):
+    print("Creatinging a new order\n")
     customer_name = input("Please enter your name:\n")
+    print("")
     customer_address =input("Please enter your address:\n")
+    print("")
     customer_number = input("Please enter your phone number:\n")
+    print("")
     for index, courier in enumerate(couriers_list):
-        print(index + 1, courier)
+        print(f"{index + 1}. {courier['Name']}")
+    print("")
     chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+    chosen_products = selecting_product_items(products_list)
+
     new_order = {
         "Customer Name": customer_name,
         "Customer Address": customer_address,
         "Phone Number": customer_number,
         "Courier": chosen_courier,
+        "Items": chosen_products,
         "Order Status": "Preparing Order"}
     return new_order
 
+#Function that prints the index of items and allows user to selects multiple items to add
+def selecting_product_items(products_list):
+    chosen_products = ""
+    while True:
+        print("")
+        for index, item in enumerate(products_list):
+            print(f"{index + 1}. {item['Name']}")
+        print("")
+        add_product = check_input(input("Please enter the ID number of the item to add to your order:\n"))
+
+        if (add_product - 1) >= 0 and (add_product - 1) <= len(products_list):
+            add_product = str(add_product)
+            result = add_product in chosen_products
+            if result != True:
+                chosen_products += add_product + ","
+            else:
+                print("This product has already been added to your order!")
+                print("Please choose another product")
+            if input("Do you wish to add another product to your list, Please enter 'YES' to continue:\n") != "YES":
+                chosen_products = chosen_products[:len(chosen_products)-1]
+                return chosen_products
+            else:
+                continue
+        else:
+            print("Error you have selected an invalid option!")
+            print("Please try again!")
+            continue
+
 # Function to update an existing order
-def update_order(orders):
+def update_order(orders, couriers_list, products_list):
     new_order = []
     chosen_order = input_order()
 
     for key, value in orders[chosen_order].items():
 
         print(f"The current {key} is: {value}")
-        new_value = input(f"Please enter the new value for {key}:\n")
-        if new_value != "":
+        if key == 'Courier':
+            for index, courier in enumerate(couriers_list):
+                print(f"{index + 1}. {courier['Name']}")
+            print("")
+            new_value = int(input("Please choose the ID Number of the courier:\n"))
             new_order.append({key:new_value})
             orders[chosen_order].update({key:new_value})
+
+        elif key == 'Items':
+            change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
+            if change_items == "YES":
+                print("Removing previous items")
+                new_value = selecting_product_items(products_list)
+                new_order.append({key:new_value})
+                orders[chosen_order].update({key:new_value})
+            else:
+                print(f"You have chosen to keep {key}: {value}")
         else:
-            continue
+            new_value = input(f"Please enter the new value for {key}:\n")
+            if new_value != "":
+                new_order.append({key:new_value})
+                orders[chosen_order].update({key:new_value})
+            else:
+                continue
     return orders
 
 # Function to update just the status of an existing order

@@ -6,17 +6,7 @@ import lists
 #   Loading lists from csv files
 products = lists.load_products()
 couriers = lists.load_couriers()
-
-# TODO load orders from csv file and save to order csv file after exiting program
-# orders will contain items key that will include index of product items
-orders_list = [{
-    "Customer Name": "John",
-    "Customer Address": "Unit 2, 12 Main Street, London, WH1 2ER",
-    "Phone Number": "0789887334",
-    "Courier": 2,
-    "Order Status": "Preparing Order",
-    #"Items":"1, 3, 4"
-}]
+orders_list = lists.load_orders()
 
 
 print("Welcome to Mike's Online Supermarket!")
@@ -91,6 +81,7 @@ while menu == True:
         menu = False
         lists.save_products(products)
         lists.save_couriers(couriers)
+        lists.save_orders(orders_list)
         exit()
 
     elif user_option == 1: # Option for products menu
@@ -208,23 +199,19 @@ while menu == True:
 
                 elif user_option == 1: # Option to print all orders
                     print()
-                    for orders in orders_list:
-                        for key, values in orders.items():
-                            print(key, ":", values)
-
-                        print("\n")
+                    o_options.print_all_orders(orders_list)
 
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
 
-                    orders_list.append(o_options.add_new_order(couriers))
+                    orders_list.append(o_options.add_new_order(couriers, products))
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")
 
                     print("choose an order to update the status of below:")
 
-                    o_options.print_orders(orders_list)
+                    o_options.print_orders_with_index(orders_list)
                     o_options.update_order_status(orders_list)
 
 
@@ -232,13 +219,13 @@ while menu == True:
                 elif user_option == 4: # Option to update an existing order
                     print("Update an order")
 
-                    o_options.print_orders(orders_list)
-                    o_options.update_order(orders_list)
+                    o_options.print_orders_with_index(orders_list)
+                    o_options.update_order(orders_list, couriers, products)
 
 
                 elif user_option == 5: # Option to delete an existing order
                     print("Delete an existing order!")
-                    o_options.print_orders(orders_list)
+                    o_options.print_orders_with_index(orders_list)
                     o_options.delete_order(orders_list)
 
                 else:
