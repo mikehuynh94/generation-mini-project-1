@@ -60,6 +60,17 @@ def check_input(user_input):
 
 def print_all_orders(orders_list):
     print()
+    sort_choice = input("Please choose if you would like to sort orders by 'Status' or 'Courier':\n")
+    if sort_choice == "Status":
+        orders_list.sort(key=lambda o: o['Order Status'])
+        #print(orders_list)
+    elif sort_choice == 'Courier':
+        orders_list.sort(key=lambda o: o['Courier'])
+        #print(orders_list)
+    else:
+        print("Error with sort choice")
+        print("Printing all orders list unsorted!\n")
+
     for orders in orders_list:
         for key, values in orders.items():
             print(f"{key}: {values}")
@@ -168,19 +179,19 @@ def test_update_order(orders, couriers_list, products_list):
     return orders
 
 #Testing printing all orders
-#print_all_orders(orders)
+print_all_orders(orders)
 
 #Testing print orders with index
 #print_all_orders_numbered_list(orders)
 
 #Testing add new order
 #First will need to load products and couriers list
-products_list = test_load_products()
-couriers = test_load_couriers()
+#products_list = test_load_products()
+#couriers = test_load_couriers()
 # orders.append(test_add_new_order(couriers, products_list))
 # print(orders)
 
 #Testing updating an existing order
-print_all_orders_numbered_list(orders)
-orders = test_update_order(orders, couriers, products_list)
-print(orders)
+#print_all_orders_numbered_list(orders)
+#orders = test_update_order(orders, couriers, products_list)
+#print(orders)

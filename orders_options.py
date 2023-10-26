@@ -13,8 +13,22 @@ def check_input(user_input):
             print("\n")
             return -1
 
+#Function to print all orders and sort by status or couriers
 def print_all_orders(orders_list):
     print()
+    sort_choice = input("Please choose if you would like to sort orders by 'Status' or 'Courier':\n")
+    if sort_choice == "Status":
+        print("")
+        orders_list.sort(key=lambda o: o['Order Status'])
+        print("Sorted orders by: Order Status")
+    elif sort_choice == 'Courier':
+        print("")
+        orders_list.sort(key=lambda o: o['Courier'])
+        print("Sorted orders by: Courier")
+    else:
+        print("Error with sort choice")
+        print("Printing all orders list unsorted!\n")
+
     for orders in orders_list:
         for key, values in orders.items():
             print(f"{key}: {values}")
@@ -24,6 +38,17 @@ def print_all_orders(orders_list):
 def print_orders_with_index(orders_list):
     print("Printing all existing orders!\n")
     if orders_list != []:
+        sort_choice = input("Please choose if you would like to sort orders by 'Status' or 'Courier':\n")
+        if sort_choice == "Status":
+            orders_list.sort(key=lambda o: o['Order Status'])
+            #print(orders_list)
+        elif sort_choice == 'Courier':
+            orders_list.sort(key=lambda o: o['Courier'])
+            #print(orders_list)
+        else:
+            print("Error with sort choice")
+            print("Printing all orders list unsorted!\n")
+
         for index, orders in enumerate(orders_list):
             print (f"======================= Order No. {index+1} =======================")
             for key, values in orders.items():
