@@ -18,11 +18,11 @@ def sort_orders(orders_list):
     if sort_choice == "Status":
         print("")
         orders_list.sort(key=lambda o: o['Order Status'])
-        print("Sorted orders by: Order Status")
+        print("Sorted orders by: Order Status\n")
     elif sort_choice == 'Courier':
         print("")
         orders_list.sort(key=lambda o: o['Courier'])
-        print("Sorted orders by: Courier")
+        print("Sorted orders by: Courier\n")
     else:
         print("Error with sort choice")
         print("Printing all orders list unsorted!\n")
@@ -43,7 +43,7 @@ def print_all_orders(orders_list):
 def print_orders_with_index(orders_list):
     print("Printing all existing orders!\n")
     if orders_list != []:
-        
+
         orders_list = sort_orders(orders_list)
 
         for index, orders in enumerate(orders_list):
@@ -64,7 +64,7 @@ def input_order():
 
 # Function to add a new order
 def add_new_order(couriers_list, products_list):
-    print("Creatinging a new order\n")
+    
     customer_name = input("Please enter your name:\n")
     print("")
     customer_address =input("Please enter your address:\n")

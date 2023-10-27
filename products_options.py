@@ -54,6 +54,7 @@ def delete_product(products):
         # Removes the product from the list
         confirmation = input("Please enter DELETE if you would like to continue:\n")
         if confirmation == "DELETE":
+            print("Deleted:", products[product_delete])
             return product_delete
         else:
             print(f"Canceled the deletion of {products[product_delete]}")

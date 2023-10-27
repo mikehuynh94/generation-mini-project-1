@@ -2,6 +2,7 @@ import orders_options as o_options
 import couriers_options
 import products_options
 import lists
+import time
 
 #   Loading lists from csv files
 products = lists.load_products()
@@ -107,6 +108,7 @@ while menu == True:
                 elif user_option == 1: # Upon selecting option 1 the system will print all the items in products
 
                     products_options.print_products(products)
+                    time.sleep(2)
 
                 elif user_option == 2: # Upon selecting option 2 this will prompt the user
                                        # to enter a name of a product they wish to add
@@ -154,6 +156,7 @@ while menu == True:
 
                 elif user_option == 1: # Option to print all couriers
                     couriers_options.print_couriers(couriers)
+                    time.sleep(2)
 
                 elif user_option == 2: # Option to add a new courier
                     print("Creating a new courier!")
@@ -200,11 +203,12 @@ while menu == True:
                 elif user_option == 1: # Option to print all orders
                     print()
                     o_options.print_all_orders(orders_list)
+                    time.sleep(2)
 
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
-
                     orders_list.append(o_options.add_new_order(couriers, products))
+                    print("\nSuccessfully create a new order!\n")
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")

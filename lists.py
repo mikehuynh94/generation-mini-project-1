@@ -7,8 +7,6 @@ def load_products():
         products_data = csv.reader(file, delimiter=",")
         for product, price in products_data:
             products.append({"Name":product,"Price":float(price)})
-
-    print(products)
     return products
 
 #Function to read from couriers.csv file and save the couriers to a list
@@ -18,7 +16,6 @@ def load_couriers():
         couriers_data = csv.reader(file, delimiter=",")
         for courier, phone_number in couriers_data:
             couriers.append({"Name":courier,"Phone":phone_number})
-    print(couriers)
     return couriers
 
 
