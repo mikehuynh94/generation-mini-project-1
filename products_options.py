@@ -22,23 +22,38 @@ def update_product(products):
 
     # Takes users input and -1 to find the product to update
 
-    product_edit = int(input("Enter here:\n"))-1
+    try:
+        product_edit = int(input("Enter here:\n"))-1
+    except ValueError as e:
+        print("Error input was not a number,", e)
+        product_edit = -1
 
-    print(f"Currently editing: {products[product_edit]}")
+    if product_edit >= 0 and product_edit <= len(products):
+        print(f"Currently editing: {products[product_edit]}")
     # Takes users input to replace the product in the list
-    update_product_name = input("Please enter the new product name:\n")
-    if update_product_name != "":
-        products[product_edit]['Name'] = update_product_name
-    update_product_price = input(f"Please enter the new price for {products[product_edit]['Name']}:\n")
-    if update_product_price != "":
-        try:
-            print("working")
-            update_product_price = float(update_product_price)
-            products[product_edit]['Price'] = update_product_price
-        except ValueError:
-            print("Error the value was not a price that could be added")
-            print("Please try again!")
-    return products
+        update_product_name = input("Please enter the new product name:\n")
+        if update_product_name != "":
+            products[product_edit]['Name'] = update_product_name
+        else:
+            print("Product name was not updated!")
+        update_product_price = input(f"Please enter the new price for {products[product_edit]['Name']}:\n")
+        if update_product_price != "":
+            try:
+                print("working")
+                update_product_price = float(update_product_price)
+                products[product_edit]['Price'] = update_product_price
+            except ValueError:
+                print("Error the value was not a price that could be added")
+                print("Please try again!")
+        else:
+            print("Product price was not updated!")
+        return products
+    else:
+        print("Error invalid ID number selected")
+        print("Please try again!")
+        return products
+
+
 
 # Function to allow user to remove an existing product
 def delete_product(products):
@@ -48,7 +63,12 @@ def delete_product(products):
         # adds 1 to the index as the list starts from 0
         print(f"{str(products.index(item) + 1)}. {item['Name']} Price: £{item['Price']}")
     # Takes users input and -1 to find the product to delete
-    product_delete = int(input("Enter here:\n")) - 1
+    try:
+        product_delete = int(input("Enter here:\n")) - 1
+    except ValueError as e:
+        print("Error input was not a number,", e)
+        product_delete = -1
+
     if product_delete > 0 and product_delete < len(products):
         print(f"Deleting the product: {products[product_delete]}")
         # Removes the product from the list

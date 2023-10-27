@@ -27,10 +27,10 @@ I really enjoyed this project as I have not coded for a long time, I am happy th
 My design aligns with the project requirements very well as it meets majority of the clients needs as they are able to perform all the required actions with the program.
 
 ## How did you guarantee the project's requirements?
-By reading the requirements carefully and determined how to tackle them using everything I have learned.
+By reading the requirements carefully before starting on a new feature and determined how to tackle them using everything I have learned.
 
 ## If you had more time, what is one thing you would improve upon?
 If I had more time I would like to completely transfer the lists to store it within the database and allow the user to make changes with the program.
 
 ## What did you most enjoy implementing?
-I enjoyed implementing the different methods of nested loops and if statements for the program. 
+I enjoyed implementing the different methods of nested loops and if statements for the program.

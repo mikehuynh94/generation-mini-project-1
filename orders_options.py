@@ -21,7 +21,7 @@ def sort_orders(orders_list):
         print("Sorted orders by: Order Status\n")
     elif sort_choice == 'Courier':
         print("")
-        orders_list.sort(key=lambda o: o['Courier'])
+        orders_list.sort(key=lambda o: int(o['Courier']))
         print("Sorted orders by: Courier\n")
     else:
         print("Error with sort choice")
@@ -57,14 +57,20 @@ def print_orders_with_index(orders_list):
 
 # function to take users input and turn it into an integer
 def input_order():
-    chosen_order = input("Please select the ID of the displayed orders above:\n")
-    check_input(chosen_order)
-    chosen_order = int(chosen_order) - 1
+    while True:
+        try:
+            chosen_order = input("Please select the ID of the displayed orders above:\n")
+            check_input(chosen_order)
+            chosen_order = int(chosen_order) - 1
+            break
+        except ValueError as e:
+            print("Error invalid input")
+            print("Please try again!")
     return chosen_order
 
 # Function to add a new order
 def add_new_order(couriers_list, products_list):
-    
+
     customer_name = input("Please enter your name:\n")
     print("")
     customer_address =input("Please enter your address:\n")
@@ -74,7 +80,9 @@ def add_new_order(couriers_list, products_list):
     for index, courier in enumerate(couriers_list):
         print(f"{index + 1}. {courier['Name']}")
     print("")
+
     chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+
     chosen_products = selecting_product_items(products_list)
 
     new_order = {
@@ -126,9 +134,21 @@ def update_order(orders, couriers_list, products_list):
             for index, courier in enumerate(couriers_list):
                 print(f"{index + 1}. {courier['Name']}")
             print("")
-            new_value = int(input("Please choose the ID Number of the courier:\n"))
-            new_order.append({key:new_value})
-            orders[chosen_order].update({key:new_value})
+            while True:
+                try:
+                    new_value = int(input("Please choose the ID Number of the courier:\n"))
+
+                except ValueError as e:
+                    print("Error: invalid input\nPlease try again")
+                    new_value = -1
+                if new_value > 0 and new_value < len(couriers_list):
+                    new_order.append({key:new_value})
+                    orders[chosen_order].update({key:new_value})
+                    break
+                else:
+                    print("Error invalid courier ID has been selected")
+                    print("Please try again!")
+
 
         elif key == 'Items':
             change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
