@@ -97,7 +97,7 @@ def delete_product(connection):
 
 
             if product_delete >= 0 and product_delete <= len(products):
-                print("\nCurrently selected for deletion:\nItem from products database:")
+                print("\nCurrently selected for deletion:\nRecord from products database:")
                 print(f"{products[product_delete][0]}. {products[product_delete][1]}: £{products[product_delete][2]}\n")
                 confirmation = input("Please enter DELETE if you would like to continue:\n")
                 if confirmation == "DELETE":
@@ -127,7 +127,7 @@ def delete_product(connection):
 ########################### COURIERS ##############################################
 
 # Print all records from couriers table
-def load_couriers_table(connection):
+def print_couriers_table(connection):
     with connection:
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM couriers')
@@ -137,6 +137,21 @@ def load_couriers_table(connection):
             for courier in couriers:
                 print(f"{courier[1]}, Phone: {courier[2]}")
             print()
+
+# def load_couriers_table(connection):
+#     with connection:
+#         with connection.cursor() as cursor:
+#             couriers_list = []
+#             cursor.execute('SELECT * FROM couriers')
+#             couriers = cursor.fetchall()
+#             print('Displaying all records...\n')
+#             print("Couriers:")
+#             for courier in couriers:
+#                 print(f"{courier[1]}, Phone: {courier[2]}")
+#                 temp = {
+#                     'Name'
+#                 }
+#             print()
 
 def show_index_couriers(couriers):
     print('Displaying all records...\n')
@@ -179,14 +194,7 @@ def test_update_courier(connection):
                     print()
                 update_phone_number = input(f"Please enter the new price for {couriers[courier_edit][2]}:\n")
                 if update_phone_number != "":
-                    try:
-                        update_phone_number = float(update_phone_number)
-
-                    except ValueError:
-                        print("Error the value was not a price that could be added")
-                        print("Please try again!")
-
-                    sql = f"UPDATE products SET phone_number = {update_phone_number} WHERE courier_id = {couriers[courier_edit][0]}"
+                    sql = f"UPDATE couriers SET phone_number = {update_phone_number} WHERE courier_id = {couriers[courier_edit][0]}"
                     cursor.execute(sql)
             else:
                 print("Error invalid ID number selected")
@@ -194,10 +202,78 @@ def test_update_courier(connection):
                 return False
             connection.commit()
 
+def delete_courier(connection):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM couriers')
+            couriers = cursor.fetchall()
+            show_index_couriers(couriers)
+
+            print("Please select an ID number from the list above to delete:\n")
+            try:
+                courier_delete = int(input("Enter here:\n"))-1
+            except ValueError as e:
+                print("Error input was not a number,", e)
+                courier_delete = -1
+
+
+            if courier_delete >= 0 and courier_delete <= len(couriers):
+                print("\nCurrently selected for deletion:\nRecord from couriers database:")
+                print(f"{couriers[courier_delete][0]}. {couriers[courier_delete][1]}, Phone: {couriers[courier_delete][2]}\n")
+                confirmation = input("Please enter DELETE if you would like to continue:\n")
+                if confirmation == "DELETE":
+                    print("Deleted:", couriers[courier_delete])
+                    sql = f"DELETE FROM couriers where courier_id = {couriers[courier_delete][0]}"
+                    cursor.execute(sql)
+                    connection.commit()
+                else:
+                    print(f"Canceled the deletion of {couriers[courier_delete]}")
+
 ##################### Function call to test couriers table ########################
 
 #Function to test print all courier records from database
 #load_couriers_table(connect_to_database())
 
 #Function to add new courier into database
-test_add_new_courier(connect_to_database())
+#test_add_new_courier(connect_to_database())
+
+#Function to update an existing courier from the database
+#test_update_courier(connect_to_database())
+
+#Function to dlete an existing courier from the database
+#delete_courier(connect_to_database())
+
+########################### WEEK 5 Update to Orders ###############################
+
+def add_new_order(connection):
+
+    customer_name = input("Please enter your name:\n")
+    print("")
+    customer_address =input("Please enter your address:\n")
+    print("")
+    customer_number = input("Please enter your phone number:\n")
+    print("")
+
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM couriers')
+            couriers = cursor.fetchall()
+            show_index_couriers(couriers)
+
+
+    chosen_courier = int(input("Please choose the ID Number of the courier:\n")) - 1
+
+    check_courier = couriers[chosen_courier] in couriers
+    
+    #chosen_products = selecting_product_items(products_list)
+
+    new_order = {
+        "Customer Name": customer_name,
+        "Customer Address": customer_address,
+        "Phone Number": customer_number,
+        "Courier": chosen_courier,
+        #"Items": chosen_products,
+        "Order Status": "Preparing Order"}
+    return new_order
+
+add_new_order(connect_to_database())
