@@ -1,3 +1,4 @@
+import couriers_options
 #Function to check if user enters a number
 def check_input(user_input):
 
@@ -69,7 +70,7 @@ def input_order():
     return chosen_order
 
 # Function to add a new order
-def add_new_order(couriers_list, products_list):
+def add_new_order(connection):
 
     customer_name = input("Please enter your name:\n")
     print("")
@@ -77,21 +78,43 @@ def add_new_order(couriers_list, products_list):
     print("")
     customer_number = input("Please enter your phone number:\n")
     print("")
-    for index, courier in enumerate(couriers_list):
-        print(f"{index + 1}. {courier['Name']}")
-    print("")
+    #new_order = {}
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM couriers')
+            couriers = cursor.fetchall()
+            couriers_options.show_index_couriers(couriers)
 
-    chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+        while True:
+            try:
+                chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+            except ValueError as e:
+                print("Error: You did not enter a number")
+                chosen_courier = -1
+            try:
+                courier_check = couriers[chosen_courier - 1] in couriers
+            except IndexError as e:
+                print("Error: ID number was not in range")
+                courier_check = False
+            if courier_check  == True:
+                break
+            else:
+                print("Please try again!")
 
-    chosen_products = selecting_product_items(products_list)
 
-    new_order = {
-        "Customer Name": customer_name,
-        "Customer Address": customer_address,
-        "Phone Number": customer_number,
-        "Courier": chosen_courier,
-        "Items": chosen_products,
-        "Order Status": "Preparing Order"}
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM products')
+            products = cursor.fetchall()
+            #show_index_products(products)
+            chosen_products = selecting_product_items(products)
+        new_order = {
+            "Customer Name": customer_name,
+            "Customer Address": customer_address,
+            "Phone Number": customer_number,
+            "Courier": chosen_courier,
+            "Items": chosen_products,
+            "Order Status": "Preparing Order"}
+
     return new_order
 
 #Function that prints the index of items and allows user to selects multiple items to add
@@ -100,7 +123,7 @@ def selecting_product_items(products_list):
     while True:
         print("")
         for index, item in enumerate(products_list):
-            print(f"{index + 1}. {item['Name']}")
+            print(f"{index + 1}. {item[1]}")
         print("")
         add_product = check_input(input("Please enter the ID number of the item to add to your order:\n"))
 
@@ -123,16 +146,25 @@ def selecting_product_items(products_list):
             continue
 
 # Function to update an existing order
-def update_order(orders, couriers_list, products_list):
+def update_order(orders, connection):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM couriers')
+            couriers_list = cursor.fetchall()
+
+            cursor.execute('SELECT * FROM products')
+            products_list = cursor.fetchall()
     new_order = []
+
     chosen_order = input_order()
+    
 
     for key, value in orders[chosen_order].items():
 
         print(f"The current {key} is: {value}")
         if key == 'Courier':
             for index, courier in enumerate(couriers_list):
-                print(f"{index + 1}. {courier['Name']}")
+                print(f"{index + 1}. {courier[1]}")
             print("")
             while True:
                 try:

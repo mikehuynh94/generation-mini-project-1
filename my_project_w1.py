@@ -3,10 +3,18 @@ import couriers_options
 import products_options
 import lists
 import time
+import pymysql
+
+# Connecting to database
+def connect_to_database():
+    connection = pymysql.connect(
+                host='localhost', database='Mini_Project',
+                user='root', password='password'
+            )
+    return connection
 
 #   Loading lists from csv files
-products = lists.load_products()
-couriers = lists.load_couriers()
+
 orders_list = lists.load_orders()
 
 
@@ -80,8 +88,8 @@ while menu == True:
     if user_option == 0:    # If user selects 0 then the program will terminate
         print("Leaving Mike's Online Supermarket")
         menu = False
-        lists.save_products(products)
-        lists.save_couriers(couriers)
+        #lists.save_products(products)
+        #lists.save_couriers(couriers)
         lists.save_orders(orders_list)
         exit()
 
@@ -107,22 +115,21 @@ while menu == True:
 
                 elif user_option == 1: # Upon selecting option 1 the system will print all the items in products
 
-                    products_options.print_products(products)
+                    products_options.print_all_products(connect_to_database())
                     time.sleep(2)
 
                 elif user_option == 2: # Upon selecting option 2 this will prompt the user
                                        # to enter a name of a product they wish to add
 
-                    products.append(products_options.add_new_product())
+                    products_options.add_new_product(connect_to_database())
 
                 elif user_option == 3: # Upon selecting option 3
 
-                    products = products_options.update_product(products)
+                    products_options.update_product(connect_to_database())
 
                 elif user_option == 4: # Upon selecting option 4
-                    remove_product = products_options.delete_product(products)
-                    if remove_product != False:
-                        products.pop(remove_product)
+                    products_options.delete_product(connect_to_database())
+
 
                 # if the user enters an option that is not within the selected range
                 # # then print the error and loop
@@ -155,20 +162,20 @@ while menu == True:
                     c_menu = False
 
                 elif user_option == 1: # Option to print all couriers
-                    couriers_options.print_couriers(couriers)
+                    couriers_options.print_couriers(connect_to_database())
                     time.sleep(2)
 
                 elif user_option == 2: # Option to add a new courier
                     print("Creating a new courier!")
-                    couriers.append(couriers_options.add_couriers())
+                    couriers_options.add_new_courier(connect_to_database())
 
                 elif user_option == 3: # Option to update an existing courier
                     print("Updating an existing courier!")
-                    couriers = couriers_options.update_courier(couriers)
+                    couriers_options.update_courier(connect_to_database())
 
                 elif user_option == 4: # Option to delete an existing courier
                     print("Deleting an existing courier")
-                    couriers = couriers_options.delete_courier(couriers)
+                    couriers_options.delete_courier(connect_to_database())
 
                 else:
                 # if the user enters an option that is not within the selected range
@@ -207,7 +214,7 @@ while menu == True:
 
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
-                    orders_list.append(o_options.add_new_order(couriers, products))
+                    orders_list.append(o_options.add_new_order(connect_to_database()))
                     print("\nSuccessfully create a new order!\n")
 
                 elif user_option == 3: # Option to update an existing order's status
@@ -224,7 +231,7 @@ while menu == True:
                     print("Update an order")
 
                     o_options.print_orders_with_index(orders_list)
-                    o_options.update_order(orders_list, couriers, products)
+                    o_options.update_order(orders_list, connect_to_database())
 
 
                 elif user_option == 5: # Option to delete an existing order

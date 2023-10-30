@@ -11,7 +11,7 @@ def connect_to_database():
 ####################### PRODUCTS ###############################
 
 # Print all records from products table
-def load_products_table(connection):
+def print_all_products(connection):
     with connection:
         with connection.cursor() as cursor:
 
@@ -127,7 +127,7 @@ def delete_product(connection):
 ########################### COURIERS ##############################################
 
 # Print all records from couriers table
-def print_couriers_table(connection):
+def print_couriers(connection):
     with connection:
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM couriers')
@@ -138,20 +138,6 @@ def print_couriers_table(connection):
                 print(f"{courier[1]}, Phone: {courier[2]}")
             print()
 
-# def load_couriers_table(connection):
-#     with connection:
-#         with connection.cursor() as cursor:
-#             couriers_list = []
-#             cursor.execute('SELECT * FROM couriers')
-#             couriers = cursor.fetchall()
-#             print('Displaying all records...\n')
-#             print("Couriers:")
-#             for courier in couriers:
-#                 print(f"{courier[1]}, Phone: {courier[2]}")
-#                 temp = {
-#                     'Name'
-#                 }
-#             print()
 
 def show_index_couriers(couriers):
     print('Displaying all records...\n')
