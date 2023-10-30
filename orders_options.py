@@ -141,7 +141,7 @@ def update_order(orders, couriers_list, products_list):
                 except ValueError as e:
                     print("Error: invalid input\nPlease try again")
                     new_value = -1
-                if new_value > 0 and new_value < len(couriers_list):
+                if new_value > 0 and new_value <= len(couriers_list):
                     new_order.append({key:new_value})
                     orders[chosen_order].update({key:new_value})
                     break

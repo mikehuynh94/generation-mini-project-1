@@ -253,27 +253,130 @@ def add_new_order(connection):
     print("")
     customer_number = input("Please enter your phone number:\n")
     print("")
-
+    #new_order = {}
     with connection:
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM couriers')
             couriers = cursor.fetchall()
             show_index_couriers(couriers)
 
+        while True:
+            try:
+                chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+            except ValueError as e:
+                print("Error: You did not enter a number")
+                chosen_courier = -1
+            try:
+                courier_check = couriers[chosen_courier - 1] in couriers
+            except IndexError as e:
+                print("Error: ID number was not in range")
+                courier_check = False
+            if courier_check  == True:
+                break
+            else:
+                print("Please try again!")
 
-    chosen_courier = int(input("Please choose the ID Number of the courier:\n")) - 1
 
-    check_courier = couriers[chosen_courier] in couriers
-    
-    #chosen_products = selecting_product_items(products_list)
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM products')
+            products = cursor.fetchall()
+            #show_index_products(products)
+            chosen_products = selecting_product_items(products)
+        new_order = {
+            "Customer Name": customer_name,
+            "Customer Address": customer_address,
+            "Phone Number": customer_number,
+            "Courier": chosen_courier,
+            "Items": chosen_products,
+            "Order Status": "Preparing Order"}
 
-    new_order = {
-        "Customer Name": customer_name,
-        "Customer Address": customer_address,
-        "Phone Number": customer_number,
-        "Courier": chosen_courier,
-        #"Items": chosen_products,
-        "Order Status": "Preparing Order"}
     return new_order
 
-add_new_order(connect_to_database())
+
+def selecting_product_items(products_list):
+    chosen_products = ""
+    while True:
+        print("")
+        for index, item in enumerate(products_list):
+            print(f"{index + 1}. {item[1]}")
+        print("")
+        add_product = int(input("Please enter the ID number of the item to add to your order:\n"))
+
+        if (add_product - 1) >= 0 and (add_product - 1) <= len(products_list):
+            add_product = str(add_product)
+            result = add_product in chosen_products
+            if result != True:
+                chosen_products += add_product + ","
+            else:
+                print("This product has already been added to your order!")
+                print("Please choose another product")
+            if input("Do you wish to add another product to your list, Please enter 'YES' to continue:\n") != "YES":
+                chosen_products = chosen_products[:len(chosen_products)-1]
+                return chosen_products
+            else:
+                continue
+        else:
+            print("Error you have selected an invalid option!")
+            print("Please try again!")
+            continue
+
+
+def update_order(orders, connection):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM couriers')
+            couriers_list = cursor.fetchall()
+
+            cursor.execute('SELECT * FROM products')
+            products_list = cursor.fetchall()
+    new_order = []
+
+    #chosen_order = input_order()
+    chosen_order = int(input("Testing range:\n"))-1
+
+    for key, value in orders[chosen_order].items():
+
+        print(f"The current {key} is: {value}")
+        if key == 'Courier':
+            for index, courier in enumerate(couriers_list):
+                print(f"{index + 1}. {courier[1]}")
+            print("")
+            while True:
+                try:
+                    new_value = int(input("Please choose the ID Number of the courier:\n"))
+
+                except ValueError as e:
+                    print("Error: invalid input\nPlease try again")
+                    new_value = -1
+                if new_value > 0 and new_value <= len(couriers_list):
+                    new_order.append({key:new_value})
+                    orders[chosen_order].update({key:new_value})
+                    break
+                else:
+                    print("Error invalid courier ID has been selected")
+                    print("Please try again!")
+
+
+        elif key == 'Items':
+            change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
+            if change_items == "YES":
+                print("Removing previous items")
+                new_value = selecting_product_items(products_list)
+                new_order.append({key:new_value})
+                orders[chosen_order].update({key:new_value})
+            else:
+                print(f"You have chosen to keep {key}: {value}")
+        else:
+            new_value = input(f"Please enter the new value for {key}:\n")
+            if new_value != "":
+                new_order.append({key:new_value})
+                orders[chosen_order].update({key:new_value})
+            else:
+                continue
+    return orders
+
+
+order = []
+order.append(add_new_order(connect_to_database()))
+
+update_order(order, connect_to_database())
