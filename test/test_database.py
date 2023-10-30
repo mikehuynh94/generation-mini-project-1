@@ -1,4 +1,5 @@
 import pymysql
+import csv
 
 # Connecting to database
 def connect_to_database():
@@ -108,7 +109,14 @@ def delete_product(connection):
                 else:
                     print(f"Canceled the deletion of {products[product_delete]}")
 
+def test_save_products(products):
+    with open("test_save_products.csv", 'w', newline='') as file:
+        writer = csv.writer(file)
 
+        for product_items in products:
+
+            data = product_items[1], product_items[2]
+            writer.writerow(data)
 ##################### Function call to test products table ########################
 
 #Function to test print all product records from database
@@ -362,7 +370,7 @@ def update_order(orders, connection):
     return orders
 
 
-order = []
-order.append(add_new_order(connect_to_database()))
+# order = []
+# order.append(add_new_order(connect_to_database()))
 
-update_order(order, connect_to_database())
+# update_order(order, connect_to_database())
