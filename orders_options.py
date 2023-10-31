@@ -35,7 +35,6 @@ def sort_orders(orders_list):
         orders_list = sorted(orders_list, key=lambda o: o[4])
         print("Sorted orders by: Courier\n")
     else:
-        print("Error with sort choice")
         print("Printing all orders list unsorted!\n")
     return orders_list
 
@@ -243,7 +242,7 @@ def update_order(connection):
                 chosen_courier = input("Please choose the ID Number of the courier:\n")
                 if chosen_courier != "":
                     try:
-                        chosen_courier = int(chosen_courier)
+                        chosen_courier = check_input(chosen_courier)
                     except ValueError as e:
                         print("Error: You did not enter a number")
                         chosen_courier = -1
@@ -311,7 +310,7 @@ def update_order_status(connection):
 
             print("Please select an Order No. from the list above to update the status:\n")
             try:
-                order_status_update = int(input("Enter here:\n"))-1
+                order_status_update = check_input(input("Enter here:\n"))-1
             except ValueError as e:
                 print("Error input was not a number,", e)
                 order_status_update = -1
