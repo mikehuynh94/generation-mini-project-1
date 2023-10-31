@@ -294,8 +294,14 @@ def selecting_product_items(products_list):
         for index, item in enumerate(products_list):
             print(f"{index + 1}. {item[1]}")
         print("")
-        add_product = int(input("Please enter the ID number of the item to add to your order:\n"))
-
+        try:
+            add_product = int(input("Please enter the ID number of the item to add to your order:\n"))
+        except ValueError:
+            print("Error please try again!")
+            continue
+        except TypeError:
+            print("Error please try again!")
+            
         if (add_product - 1) >= 0 and (add_product - 1) <= len(products_list):
             add_product = str(add_product)
             result = add_product in chosen_products

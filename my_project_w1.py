@@ -1,7 +1,7 @@
 import orders_options as o_options
 import couriers_options
 import products_options
-import lists
+#import lists
 import time
 import pymysql
 
@@ -12,11 +12,6 @@ def connect_to_database():
                 user='root', password='password'
             )
     return connection
-
-#   Loading lists from csv files
-
-orders_list = lists.load_orders()
-
 
 print("Welcome to Mike's Online Supermarket!")
 print("=====================================")
@@ -90,7 +85,7 @@ while menu == True:
         menu = False
         #lists.save_products(products)
         #lists.save_couriers(couriers)
-        lists.save_orders(orders_list)
+        #lists.save_orders(orders_list)
         exit()
 
     elif user_option == 1: # Option for products menu
@@ -209,35 +204,29 @@ while menu == True:
 
                 elif user_option == 1: # Option to print all orders
                     print()
-                    o_options.print_all_orders(orders_list)
+                    o_options.print_all_orders(connect_to_database())
                     time.sleep(2)
 
                 elif user_option == 2: # Option to add an order
                     print("Creating a new order!")
-                    orders_list.append(o_options.add_new_order(connect_to_database()))
+                    o_options.add_new_order(connect_to_database())
                     print("\nSuccessfully create a new order!\n")
 
                 elif user_option == 3: # Option to update an existing order's status
                     print("Updating Status")
 
-                    print("choose an order to update the status of below:")
-
-                    o_options.print_orders_with_index(orders_list)
-                    o_options.update_order_status(orders_list)
+                    o_options.update_order_status(connect_to_database())
 
 
 
                 elif user_option == 4: # Option to update an existing order
                     print("Update an order")
-
-                    o_options.print_orders_with_index(orders_list)
-                    o_options.update_order(orders_list, connect_to_database())
+                    o_options.update_order(connect_to_database())
 
 
                 elif user_option == 5: # Option to delete an existing order
                     print("Delete an existing order!")
-                    o_options.print_orders_with_index(orders_list)
-                    o_options.delete_order(orders_list)
+                    o_options.delete_order(connect_to_database())
 
                 else:
                 # if the user enters an option that is not within the selected range

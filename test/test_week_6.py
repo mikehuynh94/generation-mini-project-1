@@ -12,7 +12,7 @@ def connect_to_database():
 
 #function to sort orders
 def sort_orders(orders_list):
-    print(orders_list)
+
     sort_choice = input("Please choose if you would like to sort orders by 'Status' or 'Courier':\n")
     if sort_choice == "Status":
         print("")
@@ -54,10 +54,11 @@ def print_orders_with_index(connection):
             cursor.execute('SELECT * FROM orders')
             orders_list = cursor.fetchall()
 
-    print("Printing all existing orders!\n")
+
     if orders_list != []:
 
         orders_list = sort_orders(orders_list)
+
 
         for index, orders in enumerate(orders_list):
             print (f"======================= Order No. {index + 1} =======================")
@@ -141,12 +142,10 @@ def delete_order(connection):
                 print("Error input was not a number,", e)
                 order_delete = -1
 
-            #print(orders[order_delete])
 
             if order_delete >= 0 and order_delete <= len(orders):
                 print("\nCurrently selected for deletion:\nRecord from orders database:")
 
-                #print(f'Order ID: {orders[order_delete][0]}')
                 print(f'Customer Name: {orders[order_delete][1]}')
                 print(f'Customer Address: {orders[order_delete][2]}')
                 print(f'Phone Number: {orders[order_delete][3]}')
@@ -166,9 +165,6 @@ def delete_order(connection):
                 print("Error: invalid order number Selected\nPlease Try again!")
 
 
-#################### WORK IN PROGRESS ##########################
-
-
 def update_order_status(connection):
     with connection:
         with connection.cursor() as cursor:
@@ -183,12 +179,9 @@ def update_order_status(connection):
                 print("Error input was not a number,", e)
                 order_status_update = -1
 
-            #print(orders[order_delete])
-
             if order_status_update >= 0 and order_status_update <= len(orders):
                 print("\nCurrently selected for status update:\nRecord from orders database:")
 
-                #print(f'Order ID: {orders[order_delete][0]}')
                 print(f'Customer Name: {orders[order_status_update][1]}')
                 print(f'Customer Address: {orders[order_status_update][2]}')
                 print(f'Phone Number: {orders[order_status_update][3]}')
@@ -213,6 +206,11 @@ def update_order_status(connection):
 
             if chosen_status > 0 and chosen_status <= len(order_status):
                 print()
+                #update order status
+                sql = f"UPDATE orders SET status_id = {chosen_status} WHERE order_id = {orders[order_status_update][0]}"
+                cursor.execute(sql, ())
+                connection.commit()
+                print(f"Successfully updated {orders[order_status_update][1]}'s order to {chosen_status}")
             else:
                 print('\nError invalid selection\nPlease try again!')
 
@@ -229,20 +227,6 @@ def update_order(connection):
 
             cursor.execute('SELECT * FROM orders')
             orders = cursor.fetchall()
-
-            # orders = sort_orders(orders)
-
-            # for order in (orders):
-            #     print (f"======================= Order ID {order[0]} =======================")
-
-            #     print(f'\nCustomer Name: {order[1]}')
-            #     print(f'Customer Address: {order[2]}')
-            #     print(f'Phone Number: {order[3]}')
-            #     print(f'Courier: {order[4]}')
-            #     print(f'Order Status: {order[5]}')
-            #     print(f'Items: {order[6]}\n')
-            # print("===========================================================")
-            # print("\n")
             orders = print_orders_with_index(connect_to_database())
 
             print("Please select an ID number from the list above to update:\n")
@@ -263,47 +247,101 @@ def update_order(connection):
                 print(f'Order Status: {orders[order_update_index][5]}')
                 print(f'Items: {orders[order_update_index][6]}\n')
 
+            new_customer_name = input(f"Please enter the new value for\ncustomer name: {orders[order_update_index][1]}:\n")
+            if new_customer_name != "":
+                sql = f"UPDATE orders SET customer_name = '{new_customer_name}' WHERE order_id = {orders[order_update_index][0]}"
+                cursor.execute(sql)
+                connection.commit()
+                print(f"Successfully updated customer name to: {new_customer_name}")
+            else:
+                print("Customer name has not been updated")
 
+            new_customer_address = input(f"Please enter the new value for\naddress: {orders[order_update_index][2]}:\n")
+            if new_customer_address != "":
+                sql = f'UPDATE orders SET customer_address = "{new_customer_address}" WHERE order_id = {orders[order_update_index][0]}'
+                cursor.execute(sql)
+                connection.commit()
+                print(f"Successfully updated customer address to: {new_customer_address}")
+            else:
+                print("Customer address has not been updated")
+
+            new_customer_phone = input(f"Please enter the new value for\ncontact number: {orders[order_update_index][3]}:\n")
+            if new_customer_phone != "":
+                sql = f"UPDATE orders SET phone_number = '{new_customer_phone}' WHERE order_id = {orders[order_update_index][0]}"
+                cursor.execute(sql)
+                connection.commit()
+                print(f"Successfully updated contact number to: {new_customer_phone}")
+            else:
+                print("Customer name has not been updated")
 
 
             show_index_couriers(couriers)
-        while True:
+
+            while True:
+                print(f'Currently updating Courier: {orders[order_update_index][4]}')
+                chosen_courier = input("Please choose the ID Number of the courier:\n")
+                if chosen_courier != "":
+                    try:
+                        chosen_courier = int(chosen_courier)
+                    except ValueError as e:
+                        print("Error: You did not enter a number")
+                        chosen_courier = -1
+
+                    if chosen_courier >=  0 and chosen_courier <= len(couriers):
+                        sql = f"UPDATE orders SET courier_id = {chosen_courier} WHERE order_id = {orders[order_update_index][0]}"
+                        cursor.execute(sql)
+                        connection.commit()
+                        print(f"Successfully updated courier to: {chosen_courier}")
+                        break
+                    else:
+                        print("Error: Courier ID number was not in range please try again")
+
+
+                else:
+                    print("Courier was not updated")
+                    break
+
+
+
+            cursor.execute('SELECT * FROM order_status')
+            order_status = cursor.fetchall()
+            for status in order_status:
+                print(f'{status[0]}: {status[1]}')
+            print(f'\nCurrently updating order status: {orders[order_update_index][5]}')
+            chosen_status = input("\nPlease select the new status ID:\n")
             try:
-                chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
-            except ValueError as e:
-                print("Error: You did not enter a number")
-                chosen_courier = -1
-            try:
-                courier_check = couriers[chosen_courier - 1] in couriers
-            except IndexError as e:
-                print("Error: ID number was not in range")
-                courier_check = False
-            if courier_check  == True:
-                break
+                chosen_status = int(chosen_status)
+            except TypeError:
+                chosen_status = -1
+            except ValueError:
+                chosen_status = -1
+
+
+            if chosen_status > 0 and chosen_status <= len(order_status):
+                sql = f"UPDATE orders SET status_id = {chosen_status} WHERE order_id = {orders[order_update_index][0]}"
+                cursor.execute(sql)
+                connection.commit()
+                print(f"Successfully updated order status to {chosen_status}")
             else:
-                print("Please try again!")
+                print('Order status was not updated!\n')
 
 
 
-        change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
-        if change_items == "YES":
-            print("Removing previous items")
-            new_value = selecting_product_items(products_list)
-            # Write new update here
-            # new_order.append({key:new_value})
-            # orders[chosen_order].update({key:new_value})
-        else:
-            print(f"You have chosen to keep ")
+            print(f'Currently updating selected items: {orders[order_update_index][6]}\n')
 
-        new_value = input(f"Please enter the new value for :\n")
-        if new_value != "":
-            print()
-            #Write new update here
-            # new_order.append({key:new_value})
-            # orders[chosen_order].update({key:new_value})
-        else:
-            print()
-    connection.commit()
+            change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
+            if change_items == "YES":
+                print("Please select your items")
+                new_products = selecting_product_items(products_list)
+                sql = f"UPDATE orders SET items = '{new_products}' WHERE order_id = {orders[order_update_index][0]}"
+                cursor.execute(sql)
+                connection.commit()
+                print(f"Successfully updated items to: {new_products}")
+            else:
+                print(f"You have chosen to keep your previously selected items!")
+
+
+
 
 
 ############ TESTING Orders fuctions with database ####################
@@ -312,6 +350,6 @@ def update_order(connection):
 
 # delete_order(connect_to_database())
 
-update_order_status(connect_to_database())
+#update_order_status(connect_to_database())
 
-#update_order(connect_to_database())
+update_order(connect_to_database())
