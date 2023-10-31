@@ -14,23 +14,25 @@ It will contain a main menu, products menu, couriers menu and a orders menu. The
 To run the application you will will need to run the program in an integrated terminal and run the command 'py my_project_w1.py' otherwise you can also run the program by selecting the play button in the top right hand corner of visual studio. (Note: if there is an error when using the play button you may need to use the drop down menu located next to the play button after hovering and select to run python file)
 
 ## how to run any unit tests
-The test was performed as Non-test driven development (NTDD), the unit tests for this program has been split up into different sections to allow for testing the functions for each list and how they would communicate with each other. The python files are to test the actions for products, couriers and orders.
+The unit tests was performed as Non-test driven development (NTDD), they have been split up into different sections to test each of the functions for the program.
 
-At the top of the py files you can start with testing to read and save from a csv file, there is also a function call to test if this is working.
+above each functions they are titled to give a brief description below the main parts they are split up to test whether you need to connect to a database or read/write into a file.
 
-Once we are able to save and load the program, you will be able to test the functionality of the menu actions separately. Note: function calls have been commented out to test other functions you will need to remove the comments to call the functions.
+Once we are able to save and load the program to a database or file, you will be able to test the functionality of the menu actions separately. Although some difficult functions may need previous functions to be called first.
+
+Note: function calls have been commented out to test other functions you will need to remove the comments to call the functions.
 
 ## Project Reflections
-I really enjoyed this project as I have not coded for a long time, I am happy that I was able to use my past experience in college/university to help me in this project. Being able to understand how to tackle the requirements helped to structure my project very well and understand the importance of unit testing.
+I really enjoyed this project as I have not coded for a long time, I am happy that I was able to use my past experience in college/university to help me in this project. Being able to understand how to tackle the requirements helped to structure my project very well and understand the importance of unit testing. I am learning new things and recapping on stuff I have forgotten such as databases.
 
 ## How did your design go about meeting the project's requirements?
 My design aligns with the project requirements very well as it meets majority of the clients needs as they are able to perform all the required actions with the program.
 
 ## How did you guarantee the project's requirements?
-By reading the requirements carefully before starting on a new feature and determined how to tackle them using everything I have learned.
+By reading the requirements carefully before starting on a new feature and focusing on how to tackle them using everything I have learned.
 
 ## If you had more time, what is one thing you would improve upon?
-If I had more time I would like to completely transfer the lists to store it within the database and attempted to do all of the stretch goals and requirements.
+implement more fields such as product inventory to the database and attempted to do all of the stretch goals and requirements.
 
 ## What did you most enjoy implementing?
-I enjoyed implementing the different methods of nested loops and if statements for the program.
+I enjoyed unit testing, learning how to sort the orders list and using databases to connect to my program to do various actions such as update, insert.
