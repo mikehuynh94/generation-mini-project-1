@@ -202,7 +202,20 @@ def update_order_status(connection):
             for status in order_status:
                 print(f'{status[0]}: {status[1]}')
 
-            
+            chosen_status = input("\nPlease select the new status ID:\n")
+            try:
+                chosen_status = int(chosen_status)
+            except TypeError:
+                chosen_status = -1
+            except ValueError:
+                chosen_status = -1
+
+
+            if chosen_status > 0 and chosen_status <= len(order_status):
+                print()
+            else:
+                print('\nError invalid selection\nPlease try again!')
+
 
 
 def update_order(connection):
@@ -291,6 +304,8 @@ def update_order(connection):
         else:
             print()
     connection.commit()
+
+
 ############ TESTING Orders fuctions with database ####################
 
 # add_new_order(connect_to_database())

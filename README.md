@@ -30,7 +30,7 @@ My design aligns with the project requirements very well as it meets majority of
 By reading the requirements carefully before starting on a new feature and determined how to tackle them using everything I have learned.
 
 ## If you had more time, what is one thing you would improve upon?
-If I had more time I would like to completely transfer the lists to store it within the database and allow the user to make changes with the program.
+If I had more time I would like to completely transfer the lists to store it within the database and attempted to do all of the stretch goals and requirements.
 
 ## What did you most enjoy implementing?
 I enjoyed implementing the different methods of nested loops and if statements for the program.
