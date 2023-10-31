@@ -25,7 +25,7 @@ Note: function calls have been commented out to test other functions you will ne
 The Test driven development can be run in the unit_testing.py file to test the function for checking input to see if it can be changed to an integer and another function to test the list sorting feature.
 
 ## Project Reflections
-I really enjoyed this project as I have not coded for a long time, I am happy that I was able to use my past experience in college/university to help me in this project. Being able to understand how to tackle the requirements helped to structure my project very well and understand the importance of unit testing. I am learning new things and recapping on stuff I have forgotten such as databases.
+I really enjoyed this project as I have not coded for a long time, I am happy that I was able to use my past experience in college/university to help me in this project. Being able to understand how to tackle the requirements helped to structure my project very well. I am learning new things and recapping on stuff I have forgotten such as databases.
 
 ## How did your design go about meeting the project's requirements?
 My design aligns with the project requirements very well as it meets majority of the clients needs as they are able to perform all the required actions with the program.
