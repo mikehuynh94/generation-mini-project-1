@@ -59,9 +59,9 @@ def print_orders_with_index(connection):
 
         orders_list = sort_orders(orders_list)
 
-        for orders in orders_list:
-            print (f"======================= Order ID {orders[0]} =======================")
-
+        for index, orders in enumerate(orders_list):
+            print (f"======================= Order No. {index + 1} =======================")
+            #print(f'Order ID: {orders[0]}')
             print(f'\nCustomer Name: {orders[1]}')
             print(f'Customer Address: {orders[2]}')
             print(f'Phone Number: {orders[3]}')
@@ -72,6 +72,7 @@ def print_orders_with_index(connection):
         print("\n")
     else:
         print("There are no more orders left!")
+    return orders_list
 
 
 ################### Testing printing functions ################################
@@ -131,33 +132,21 @@ def delete_order(connection):
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM orders')
             orders = cursor.fetchall()
+            orders = print_orders_with_index(connect_to_database())
 
-            orders = sort_orders(orders)
-
-            for order in (orders):
-                print (f"======================= Order ID {order[0]} =======================")
-
-                print(f'\nCustomer Name: {order[1]}')
-                print(f'Customer Address: {order[2]}')
-                print(f'Phone Number: {order[3]}')
-                print(f'Courier: {order[4]}')
-                print(f'Order Status: {order[5]}')
-                print(f'Items: {order[6]}\n')
-            print("===========================================================")
-            print("\n")
-
-            print("Please select an ID number from the list above to delete:\n")
+            print("Please select an Order No. from the list above to delete:\n")
             try:
                 order_delete = int(input("Enter here:\n"))-1
             except ValueError as e:
                 print("Error input was not a number,", e)
                 order_delete = -1
 
+            #print(orders[order_delete])
 
             if order_delete >= 0 and order_delete <= len(orders):
                 print("\nCurrently selected for deletion:\nRecord from orders database:")
 
-                print(f'Order ID: {orders[order_delete][0]}')
+                #print(f'Order ID: {orders[order_delete][0]}')
                 print(f'Customer Name: {orders[order_delete][1]}')
                 print(f'Customer Address: {orders[order_delete][2]}')
                 print(f'Phone Number: {orders[order_delete][3]}')
@@ -173,67 +162,141 @@ def delete_order(connection):
                     connection.commit()
                 else:
                     print(f"Canceled the deletion of {orders[order_delete]}")
+            else:
+                print("Error: invalid order number Selected\nPlease Try again!")
 
 
 #################### WORK IN PROGRESS ##########################
-def update_order(orders, connection):
+
+
+def update_order_status(connection):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM orders')
+            orders = cursor.fetchall()
+            orders = print_orders_with_index(connect_to_database())
+
+            print("Please select an Order No. from the list above to update the status:\n")
+            try:
+                order_status_update = int(input("Enter here:\n"))-1
+            except ValueError as e:
+                print("Error input was not a number,", e)
+                order_status_update = -1
+
+            #print(orders[order_delete])
+
+            if order_status_update >= 0 and order_status_update <= len(orders):
+                print("\nCurrently selected for status update:\nRecord from orders database:")
+
+                #print(f'Order ID: {orders[order_delete][0]}')
+                print(f'Customer Name: {orders[order_status_update][1]}')
+                print(f'Customer Address: {orders[order_status_update][2]}')
+                print(f'Phone Number: {orders[order_status_update][3]}')
+                print(f'Courier: {orders[order_status_update][4]}')
+                print(f'Order Status: {orders[order_status_update][5]}')
+                print(f'Items: {orders[order_status_update][6]}\n')
+
+
+            cursor.execute('SELECT * FROM order_status')
+            order_status = cursor.fetchall()
+            for status in order_status:
+                print(f'{status[0]}: {status[1]}')
+
+            
+
+
+def update_order(connection):
     with connection:
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM couriers')
-            couriers_list = cursor.fetchall()
+            couriers = cursor.fetchall()
 
             cursor.execute('SELECT * FROM products')
             products_list = cursor.fetchall()
-    new_order = []
 
-    #chosen_order = input_order()
-    chosen_order = int(input("Testing range:\n"))-1
+            cursor.execute('SELECT * FROM orders')
+            orders = cursor.fetchall()
 
-    for key, value in orders[chosen_order].items():
+            # orders = sort_orders(orders)
 
-        print(f"The current {key} is: {value}")
-        if key == 'Courier':
-            for index, courier in enumerate(couriers_list):
-                print(f"{index + 1}. {courier[1]}")
-            print("")
-            while True:
-                try:
-                    new_value = int(input("Please choose the ID Number of the courier:\n"))
+            # for order in (orders):
+            #     print (f"======================= Order ID {order[0]} =======================")
 
-                except ValueError as e:
-                    print("Error: invalid input\nPlease try again")
-                    new_value = -1
-                if new_value > 0 and new_value <= len(couriers_list):
-                    new_order.append({key:new_value})
-                    orders[chosen_order].update({key:new_value})
-                    break
-                else:
-                    print("Error invalid courier ID has been selected")
-                    print("Please try again!")
+            #     print(f'\nCustomer Name: {order[1]}')
+            #     print(f'Customer Address: {order[2]}')
+            #     print(f'Phone Number: {order[3]}')
+            #     print(f'Courier: {order[4]}')
+            #     print(f'Order Status: {order[5]}')
+            #     print(f'Items: {order[6]}\n')
+            # print("===========================================================")
+            # print("\n")
+            orders = print_orders_with_index(connect_to_database())
+
+            print("Please select an ID number from the list above to update:\n")
+            try:
+                order_update_index = int(input("Enter here:\n"))-1
+            except ValueError as e:
+                print("Error input was not a number,", e)
+                order_update_index = -1
+
+            if order_update_index >= 0 and order_update_index <= len(orders):
+                print("\nCurrently selected for update:\nRecord from orders database:")
+
+                print(f'Order ID: {orders[order_update_index][0]}')
+                print(f'Customer Name: {orders[order_update_index][1]}')
+                print(f'Customer Address: {orders[order_update_index][2]}')
+                print(f'Phone Number: {orders[order_update_index][3]}')
+                print(f'Courier: {orders[order_update_index][4]}')
+                print(f'Order Status: {orders[order_update_index][5]}')
+                print(f'Items: {orders[order_update_index][6]}\n')
 
 
-        elif key == 'Items':
-            change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
-            if change_items == "YES":
-                print("Removing previous items")
-                new_value = selecting_product_items(products_list)
-                new_order.append({key:new_value})
-                orders[chosen_order].update({key:new_value})
+
+
+            show_index_couriers(couriers)
+        while True:
+            try:
+                chosen_courier = int(input("Please choose the ID Number of the courier:\n"))
+            except ValueError as e:
+                print("Error: You did not enter a number")
+                chosen_courier = -1
+            try:
+                courier_check = couriers[chosen_courier - 1] in couriers
+            except IndexError as e:
+                print("Error: ID number was not in range")
+                courier_check = False
+            if courier_check  == True:
+                break
             else:
-                print(f"You have chosen to keep {key}: {value}")
+                print("Please try again!")
+
+
+
+        change_items = input("Please enter 'YES' if you would like to choose a new list of items:\n")
+        if change_items == "YES":
+            print("Removing previous items")
+            new_value = selecting_product_items(products_list)
+            # Write new update here
+            # new_order.append({key:new_value})
+            # orders[chosen_order].update({key:new_value})
         else:
-            new_value = input(f"Please enter the new value for {key}:\n")
-            if new_value != "":
-                new_order.append({key:new_value})
-                orders[chosen_order].update({key:new_value})
-            else:
-                continue
-    return orders
+            print(f"You have chosen to keep ")
 
+        new_value = input(f"Please enter the new value for :\n")
+        if new_value != "":
+            print()
+            #Write new update here
+            # new_order.append({key:new_value})
+            # orders[chosen_order].update({key:new_value})
+        else:
+            print()
+    connection.commit()
 ############ TESTING Orders fuctions with database ####################
 
-#add_new_order(connect_to_database())
+# add_new_order(connect_to_database())
 
-#delete_order(connect_to_database())
+# delete_order(connect_to_database())
 
-#update_order()
+update_order_status(connect_to_database())
+
+#update_order(connect_to_database())
