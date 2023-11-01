@@ -23,10 +23,22 @@ def add_new_product(connection):
     with connection:
         with connection.cursor() as cursor:
             sql = "INSERT INTO products (product_name, product_price) VALUES (%s,%s)"
-            product_name = input("Enter the product name for the new record:\n")
-            product_price = float(input(f"Enter the price for {product_name}:\n"))
+            while True:
+                product_name = input("Enter the product name for the new record:\n")
+                if product_name != "":
+                    break
+                else:
+                    print("Please enter a name for the new product!")
+            while True:
+                try:
+                    product_price = float(input(f"Enter the price for {product_name}:\n"))
+                    break
+                except ValueError as e:
+                    print("Price was not entered please try again")
+
             cursor.execute(sql, (product_name, product_price))
             connection.commit()
+            print(f"{product_name}: £{product_price} was successfully added to the system!")
 
 # Function to allow user to edit an existing product
 def update_product(connection):
@@ -52,6 +64,8 @@ def update_product(connection):
                     sql = f"UPDATE products SET product_name = '{update_product_name}' WHERE product_id = {products[product_edit][0]}"
                     cursor.execute(sql)
                     print()
+                else:
+                    print("Product name was not updated")
                 update_product_price = input(f"Please enter the new price for {products[product_edit][2]}:\n")
                 if update_product_price != "":
                     try:
@@ -63,12 +77,16 @@ def update_product(connection):
 
                     sql = f"UPDATE products SET product_price = {update_product_price} WHERE product_id = {products[product_edit][0]}"
                     cursor.execute(sql)
+                else:
+                    print("Product price was not updated!")
             else:
                 print("Error invalid ID number selected")
                 print("Please try again!")
                 return False
 
             connection.commit()
+            if update_product_name != "" or update_product_price != "":
+                print('item has been updated in the system!')
 
 
 
@@ -88,14 +106,16 @@ def delete_product(connection):
                 product_delete = -1
 
 
-            if product_delete >= 0 and product_delete <= len(products):
+            if product_delete > 0 and product_delete < len(products):
                 print("\nCurrently selected for deletion:\nRecord from products database:")
                 print(f"{products[product_delete][0]}. {products[product_delete][1]}: £{products[product_delete][2]}\n")
-                confirmation = input("Please enter DELETE if you would like to continue:\n")
+                confirmation = input("Please enter 'DELETE' if you would like to continue:\n")
                 if confirmation == "DELETE":
-                    print("Deleted:", products[product_delete])
+                    print(f"Deleted record: {products[product_delete][1]}, £{products[product_delete][2]}")
                     sql = f"DELETE FROM products where product_id = {products[product_delete][0]}"
                     cursor.execute(sql)
                     connection.commit()
                 else:
                     print(f"Canceled the deletion of {products[product_delete]}")
+            else:
+                print("ID selected was not in range of products please try again!")

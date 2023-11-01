@@ -100,13 +100,27 @@ def input_order():
 
 # Function to add a new order
 def add_new_order(connection):
-
-    customer_name = input("Please enter your name:\n")
-    print("")
-    customer_address =input("Please enter your address:\n")
-    print("")
-    customer_number = input("Please enter your phone number:\n")
-    print("")
+    while True:
+        customer_name = input("Please enter your name:\n")
+        print("")
+        if customer_name != "":
+            break
+        else:
+            print("No name was entered!")
+    while True:
+        customer_address =input("Please enter your address:\n")
+        print("")
+        if customer_address != "":
+            break
+        else:
+            print("No address was entered!")
+    while True:
+        customer_number = input("Please enter your phone number:\n")
+        print("")
+        if customer_number != "":
+            break
+        else:
+            print("No name was entered!")
 
     with connection:
         with connection.cursor() as cursor:
@@ -120,15 +134,13 @@ def add_new_order(connection):
             except ValueError as e:
                 print("Error: You did not enter a number")
                 chosen_courier = -1
-            try:
-                courier_check = couriers[chosen_courier - 1] in couriers
-            except IndexError as e:
-                print("Error: ID number was not in range")
-                courier_check = False
-            if courier_check  == True:
+
+            if chosen_courier > 0 and chosen_courier <= len(couriers):
+                print("success")
                 break
             else:
-                print("Please try again!")
+                print("Courier selected was not in range")
+                continue
 
 
         with connection.cursor() as cursor:
@@ -138,7 +150,7 @@ def add_new_order(connection):
 
 
             sql = "INSERT INTO orders (customer_name, customer_address, phone_number, courier_id, status_id, items) VALUES (%s,%s,%s,%s,%s,%s)"
-            cursor.execute(sql, (customer_name, customer_address, customer_number, chosen_courier, 1, chosen_products))
+            cursor.execute(sql, (customer_name, customer_address, customer_number, couriers[chosen_courier][0], 1, chosen_products))
             connection.commit()
 
 #Function that prints the index of items and allows user to selects multiple items to add

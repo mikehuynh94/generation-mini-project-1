@@ -23,10 +23,22 @@ def add_new_courier(connection):
     with connection:
         with connection.cursor() as cursor:
             sql = "INSERT INTO couriers (courier_name, phone_number) VALUES (%s,%s)"
-            courier_name = input("Enter the courier name for the new record:\n")
-            phone_number = (input(f"Enter the contact number for {courier_name}:\n"))
+            while True:
+                courier_name = input("Enter the courier name for the new record:\n")
+                if courier_name != "":
+                    break
+                else:
+                    print("Please enter a name for the new product!")
+            while True:
+                phone_number = (input(f"Enter the contact number for {courier_name}:\n"))
+                if phone_number != "":
+                    break
+                else:
+                    ("Contact number was not entered!")
+
             cursor.execute(sql, (courier_name, phone_number))
             connection.commit()
+            print(f"{courier_name} was successfully added to the system!")
 
 #Function to update an existing courier
 def update_courier(connection):
@@ -52,15 +64,21 @@ def update_courier(connection):
                     sql = f"UPDATE couriers SET courier_name = '{update_courier_name}' WHERE courier_id = {couriers[courier_edit][0]}"
                     cursor.execute(sql)
                     print()
-                update_phone_number = input(f"Please enter the new price for {couriers[courier_edit][2]}:\n")
+                else:
+                    print("Courier name was not updated!")
+                update_phone_number = input(f"Please enter the new contact number for {couriers[courier_edit][2]}:\n")
                 if update_phone_number != "":
                     sql = f"UPDATE couriers SET phone_number = {update_phone_number} WHERE courier_id = {couriers[courier_edit][0]}"
                     cursor.execute(sql)
+                else:
+                    print("Courier contact number was not updated!")
             else:
                 print("Error invalid ID number selected")
                 print("Please try again!")
                 return False
             connection.commit()
+            if update_courier_name != "" or update_phone_number != "":
+                print('Courier data has been updated in the system!')
 
 #Function to delete a courier from the couriers list
 def delete_courier(connection):
@@ -83,9 +101,9 @@ def delete_courier(connection):
                 print(f"{couriers[courier_delete][0]}. {couriers[courier_delete][1]}, Phone: {couriers[courier_delete][2]}\n")
                 confirmation = input("Please enter DELETE if you would like to continue:\n")
                 if confirmation == "DELETE":
-                    print("Deleted:", couriers[courier_delete])
+                    print(f"Deleted: {couriers[courier_delete][1]}'s data from the database!")
                     sql = f"DELETE FROM couriers where courier_id = {couriers[courier_delete][0]}"
                     cursor.execute(sql)
                     connection.commit()
                 else:
-                    print(f"Canceled the deletion of {couriers[courier_delete]}")
+                    print(f"Canceled the deletion of {couriers[courier_delete][1]}!")
